@@ -1,0 +1,657 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>LaunchPath — Career Path</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #FAFAFA;
+    --surface: #FFFFFF;
+    --ink: #0A0A0A;
+    --body: #525252;
+    --muted: #A3A3A3;
+    --border: #E5E5E5;
+    --border-strong: #D4D4D4;
+    --chip-bg: #F5F5F5;
+    --accent: #4F46E5;
+    --accent-soft: #EEF2FF;
+    --accent-ring: rgba(79, 70, 229, 0.25);
+    --assistant-bg: #F5F5F5;
+    --radius-sm: 6px;
+    --radius: 8px;
+    --sans: "Inter Tight", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .page {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 40px 32px 80px;
+  }
+
+  /* Top bar */
+  .topbar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo-mark {
+    width: 24px;
+    height: 24px;
+    background: var(--accent);
+    border-radius: 4px;
+    flex-shrink: 0;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.04) inset;
+  }
+
+  .brand {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  h1 {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0;
+    color: var(--ink);
+  }
+
+  .tagline {
+    font-size: 13px;
+    color: var(--muted);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Tabs */
+  .tabs {
+    margin-top: 28px;
+    display: flex;
+    gap: 4px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+
+  .tab {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    padding: 10px 14px 12px;
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    position: relative;
+    border-radius: 6px 6px 0 0;
+    letter-spacing: -0.005em;
+  }
+
+  .tab.active {
+    color: var(--ink);
+  }
+
+  .tab.active::after {
+    content: "";
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    bottom: -1px;
+    height: 2px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+
+  .subhint {
+    margin-top: 14px;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: -0.005em;
+  }
+
+  /* H1 for section */
+  .section-head {
+    margin-top: 36px;
+    margin-bottom: 24px;
+  }
+
+  .section-head h2 {
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    margin: 0 0 8px 0;
+    color: var(--ink);
+  }
+
+  .section-head p {
+    margin: 0;
+    color: var(--body);
+    font-size: 14px;
+  }
+
+  /* Chat container */
+  .chat {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .msg {
+    display: flex;
+    max-width: 78%;
+  }
+
+  .msg-bubble {
+    padding: 12px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 1.55;
+    letter-spacing: -0.003em;
+  }
+
+  .msg.user {
+    align-self: flex-end;
+    justify-content: flex-end;
+  }
+
+  .msg.user .msg-bubble {
+    background: var(--accent);
+    color: #ffffff;
+    border-radius: 6px 6px 2px 6px;
+  }
+
+  .msg.assistant {
+    align-self: flex-start;
+  }
+
+  .msg.assistant .msg-bubble {
+    background: var(--assistant-bg);
+    color: var(--ink);
+    border-radius: 6px 6px 6px 2px;
+  }
+
+  .msg.assistant.prose {
+    max-width: 100%;
+  }
+
+  .msg.assistant.prose .msg-bubble {
+    background: transparent;
+    padding: 4px 2px 2px;
+    color: var(--body);
+    font-size: 14px;
+  }
+
+  /* Cards grid */
+  .grid {
+    margin-top: 18px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    position: relative;
+    transition: none;
+  }
+
+  .card.selected {
+    border-color: var(--accent);
+    box-shadow:
+      0 0 0 3px var(--accent-ring),
+      0 1px 0 rgba(10,10,10,0.02);
+    transform: translateY(-2px);
+  }
+
+  .card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .chip {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--body);
+    background: var(--chip-bg);
+    border: 1px solid var(--border);
+    padding: 4px 8px;
+    border-radius: 4px;
+    line-height: 1;
+  }
+
+  .card.selected .chip {
+    color: var(--accent);
+    background: var(--accent-soft);
+    border-color: #C7D2FE;
+  }
+
+  .card-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  .card.selected .card-num {
+    color: var(--accent);
+  }
+
+  .card h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.018em;
+    color: var(--ink);
+    line-height: 1.25;
+  }
+
+  .meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px 0;
+    border-top: 1px dashed var(--border);
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .meta-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  .meta-value {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .steps {
+    margin: 4px 0 0 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: step;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .steps li {
+    counter-increment: step;
+    position: relative;
+    padding-left: 28px;
+    font-size: 13px;
+    color: var(--body);
+    line-height: 1.5;
+  }
+
+  .steps li::before {
+    content: counter(step, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 1px;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--muted);
+    background: var(--chip-bg);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 2px 4px;
+    line-height: 1;
+    letter-spacing: 0.02em;
+  }
+
+  .card.selected .steps li::before {
+    color: var(--accent);
+    background: var(--accent-soft);
+    border-color: #C7D2FE;
+  }
+
+  .cert-block {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .cert-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  .cert-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .cert-list li {
+    font-size: 13px;
+    color: var(--ink);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.45;
+  }
+
+  .cert-list li::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    background: var(--ink);
+    margin-top: 7px;
+    flex-shrink: 0;
+    border-radius: 1px;
+  }
+
+  .card.selected .cert-list li::before {
+    background: var(--accent);
+  }
+
+  .salary {
+    margin-top: auto;
+    padding-top: 6px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .salary-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  .salary-value {
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+
+  .card.selected .salary-value {
+    color: var(--accent);
+  }
+
+  /* Input row */
+  .composer {
+    margin-top: 32px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 14px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
+  }
+
+  .composer textarea {
+    flex: 1;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--ink);
+    background: #FAFAFA;
+    resize: none;
+    min-height: 56px;
+    outline: none;
+    line-height: 1.5;
+    letter-spacing: -0.003em;
+  }
+
+  .composer textarea::placeholder {
+    color: var(--muted);
+  }
+
+  .send-btn {
+    appearance: none;
+    border: 0;
+    background: var(--accent);
+    color: #ffffff;
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 14px;
+    padding: 0 18px;
+    height: 44px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    letter-spacing: -0.005em;
+    box-shadow: 0 1px 0 rgba(10,10,10,0.04), inset 0 -1px 0 rgba(0,0,0,0.08);
+  }
+
+  .send-btn .arrow {
+    font-family: var(--mono);
+    font-weight: 500;
+  }
+
+  .ghost-link {
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: none;
+    display: inline-block;
+    border-bottom: 1px dashed var(--border-strong);
+    padding-bottom: 1px;
+  }
+
+  .ghost-link:hover { color: var(--body); }
+
+  /* Subtle accent gradient under H1 — the ONE place */
+  .accent-line {
+    height: 2px;
+    width: 56px;
+    background: linear-gradient(90deg, var(--accent) 0%, rgba(79,70,229,0) 100%);
+    border-radius: 2px;
+    margin-top: 14px;
+  }
+</style>
+</head>
+<body>
+  <main class="page">
+    <!-- Top bar -->
+    <header class="topbar">
+      <div class="logo-mark" aria-hidden="true"></div>
+      <div class="brand">
+        <h1>LaunchPath</h1>
+        <p class="tagline">Career empowerment for newcomers, students, and anyone who has been told to wait their turn.</p>
+      </div>
+    </header>
+
+    <!-- Tabs -->
+    <nav class="tabs" role="tablist" aria-label="LaunchPath sections">
+      <button class="tab" role="tab" aria-selected="false">Resume Tailor</button>
+      <button class="tab active" role="tab" aria-selected="true">Career Path</button>
+    </nav>
+    <p class="subhint">Explore realistic paths and recertification.</p>
+
+    <!-- Section heading -->
+    <section class="section-head">
+      <h2>Career Path</h2>
+      <p>A focused conversation that turns your background into concrete next steps.</p>
+      <div class="accent-line" aria-hidden="true"></div>
+    </section>
+
+    <!-- Chat -->
+    <section class="chat" aria-label="Career path conversation">
+      <div class="msg user">
+        <div class="msg-bubble">I was a registered nurse in India for 5 years. I moved to Toronto 8 months ago and have no idea what to do next.</div>
+      </div>
+
+      <div class="msg assistant">
+        <div class="msg-bubble">That&rsquo;s a solid foundation &mdash; 5 years of clinical experience is genuinely valuable here. Where did you complete your nursing degree, and was it a 3-year diploma or a 4-year BSc?</div>
+      </div>
+
+      <div class="msg user">
+        <div class="msg-bubble">4-year BSc Nursing from Mumbai University, completed 2019. I worked on a medical-surgical ward at Lilavati Hospital.</div>
+      </div>
+
+      <div class="msg assistant prose">
+        <div class="msg-bubble">Great &mdash; BSc from Mumbai University plus med-surg experience gives you real options in Toronto. Here are three realistic paths based on what you&rsquo;ve told me:</div>
+      </div>
+
+      <!-- Cards grid -->
+      <div class="grid">
+        <!-- Card 1 — Fast Track -->
+        <article class="card">
+          <div class="card-head">
+            <span class="chip">FAST TRACK</span>
+            <span class="card-num">01 / 03</span>
+          </div>
+          <h3>PSW Fast Entry</h3>
+          <div class="meta-row">
+            <span class="meta-label">Timeline</span>
+            <span class="meta-value">3&ndash;6 months</span>
+          </div>
+          <ol class="steps">
+            <li>Enroll in an Ontario-approved PSW certificate program at George Brown or Humber (approx. $2,000&ndash;$3,500, part-time options)</li>
+            <li>Complete the clinical placement hours required by the program</li>
+            <li>Apply to long-term care homes, home care agencies, or Toronto hospitals &mdash; your nursing background makes you a standout</li>
+            <li>Begin earning while continuing RN recertification steps in parallel</li>
+          </ol>
+          <div class="cert-block">
+            <span class="cert-title">Certifications</span>
+            <ul class="cert-list">
+              <li>PSW Certificate (Ontario-approved program)</li>
+              <li>BLS (already complete)</li>
+            </ul>
+          </div>
+          <div class="salary">
+            <span class="salary-label">Realistic salary</span>
+            <span class="salary-value">$38,000 &ndash; $50,000 CAD</span>
+          </div>
+        </article>
+
+        <!-- Card 2 — Credential-Aligned (selected) -->
+        <article class="card selected" aria-current="true">
+          <div class="card-head">
+            <span class="chip">CREDENTIAL-ALIGNED</span>
+            <span class="card-num">02 / 03</span>
+          </div>
+          <h3>RN Recertification via CNO &amp; NNAS</h3>
+          <div class="meta-row">
+            <span class="meta-label">Timeline</span>
+            <span class="meta-value">18&ndash;24 months</span>
+          </div>
+          <ol class="steps">
+            <li>Submit your nursing credentials to NNAS (National Nursing Assessment Service) &mdash; fee approx. $650 CAD</li>
+            <li>Register for a WES ECA evaluation for your BSc from Mumbai University</li>
+            <li>Apply to the College of Nurses of Ontario (CNO) once the NNAS advisory report is complete</li>
+            <li>Prepare for and write the NCLEX-RN exam (approx. $360 USD registration fee)</li>
+            <li>Consider an Ontario college IEN bridging program (Centennial or Humber offer these) to fill any identified gaps &mdash; fits within your $3&ndash;5k budget</li>
+          </ol>
+          <div class="cert-block">
+            <span class="cert-title">Certifications</span>
+            <ul class="cert-list">
+              <li>NNAS Advisory Report</li>
+              <li>CNO Registration</li>
+              <li>NCLEX-RN</li>
+            </ul>
+          </div>
+          <div class="salary">
+            <span class="salary-label">Realistic salary</span>
+            <span class="salary-value">$70,000 &ndash; $88,000 CAD</span>
+          </div>
+        </article>
+
+        <!-- Card 3 — Strategic Pivot -->
+        <article class="card">
+          <div class="card-head">
+            <span class="chip">STRATEGIC PIVOT</span>
+            <span class="card-num">03 / 03</span>
+          </div>
+          <h3>Clinical Research Coordinator</h3>
+          <div class="meta-row">
+            <span class="meta-label">Timeline</span>
+            <span class="meta-value">6&ndash;12 months</span>
+          </div>
+          <ol class="steps">
+            <li>Complete a free or low-cost Good Clinical Practice (GCP) certification online through CITI Program</li>
+            <li>Take a short Clinical Research Associate/Coordinator course &mdash; Toronto Metropolitan University and some Ontario colleges offer these under $3,000</li>
+            <li>Tailor your resume to highlight your med-surg clinical knowledge and patient assessment skills, which are valued in research</li>
+            <li>Target Toronto&rsquo;s hospital research institutes (UHN, Sinai Health, SickKids) and contract research organizations (CROs) for coordinator roles</li>
+          </ol>
+          <div class="cert-block">
+            <span class="cert-title">Certifications</span>
+            <ul class="cert-list">
+              <li>GCP Certification (CITI Program)</li>
+              <li>Optional: SOCRA or ACRP Clinical Research Coordinator certification later</li>
+            </ul>
+          </div>
+          <div class="salary">
+            <span class="salary-label">Realistic salary</span>
+            <span class="salary-value">$52,000 &ndash; $70,000 CAD</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Composer -->
+    <form class="composer" onsubmit="return false;" aria-label="Send a message">
+      <textarea placeholder="Type a message&hellip;" aria-label="Message"></textarea>
+      <button type="button" class="send-btn">Send <span class="arrow">&rarr;</span></button>
+    </form>
+    <a href="#" class="ghost-link">Start over</a>
+  </main>
+</body>
+</html>
