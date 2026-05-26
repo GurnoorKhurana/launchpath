@@ -1,4 +1,5 @@
 import type { Roadmap } from "@/lib/roadmap";
+import { Markdown } from "@/lib/markdown";
 
 interface Props {
   roadmap: Roadmap;
@@ -145,7 +146,9 @@ export function RoadmapCard({ roadmap }: Props) {
               </span>
               <ol className="lp-steps">
                 {p.steps.map((s, j) => (
-                  <li key={j}>{s}</li>
+                  <li key={j}>
+                    <Markdown text={s} preserveWhitespace={false} />
+                  </li>
                 ))}
               </ol>
             </div>
@@ -158,7 +161,9 @@ export function RoadmapCard({ roadmap }: Props) {
                 </span>
                 <ul className="lp-certs">
                   {p.certifications.map((c, j) => (
-                    <li key={j}>{c}</li>
+                    <li key={j}>
+                      <Markdown text={c} preserveWhitespace={false} />
+                    </li>
                   ))}
                 </ul>
               </div>

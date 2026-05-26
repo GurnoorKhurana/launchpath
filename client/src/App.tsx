@@ -16,16 +16,16 @@ export default function App() {
   return (
     <div className="min-h-screen">
       <div className="max-w-[1140px] mx-auto px-6 md:px-8 py-10 pb-20">
-        <header className="flex items-center gap-4 pb-6 border-b border-hairline">
+        <header className="flex items-start md:items-center gap-4 pb-6 border-b border-hairline">
           <div
             aria-hidden="true"
-            className="w-6 h-6 bg-accent rounded-sm flex-shrink-0 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.04)]"
+            className="w-6 h-6 bg-accent rounded-sm flex-shrink-0 mt-1 md:mt-0 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.04)]"
           />
-          <div className="flex items-baseline gap-4 flex-1 min-w-0">
-            <h1 className="text-[22px] md:text-[22px] font-bold tracking-[-0.02em] text-ink leading-none">
+          <div className="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-4 flex-1 min-w-0">
+            <h1 className="text-[22px] font-bold tracking-[-0.02em] text-ink leading-none">
               LaunchPath
             </h1>
-            <p className="text-[13px] text-muted-foreground m-0 truncate">
+            <p className="text-[13px] text-muted-foreground m-0 leading-snug">
               Career empowerment for newcomers, students, and anyone who has been told to wait their turn.
             </p>
           </div>
@@ -70,6 +70,12 @@ export default function App() {
           {active === "tailor" && <TailorPanel />}
           {active === "career" && <CareerChatPanel />}
         </div>
+
+        <footer className="mt-12 pt-5 border-t border-hairline">
+          <p className="text-[11px] text-muted-foreground leading-snug tracking-[-0.003em]">
+            Nothing you type is saved or sent anywhere except Claude. No accounts, no tracking, no immigration system.
+          </p>
+        </footer>
       </div>
     </div>
   );

@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { careerChat, type ChatMessage } from "@/lib/api";
 import { ChatWindow } from "@/components/ChatWindow";
 import { parseAssistantMessage } from "@/lib/roadmap";
 import { RoadmapCard } from "@/components/RoadmapCard";
+import { Markdown } from "@/lib/markdown";
 
 export default function CareerChatPanel() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -44,19 +45,57 @@ export default function CareerChatPanel() {
     setError(null);
   }
 
+  const latestRoadmap = useMemo(() => {
+    for (let i = messages.length - 1; i >= 0; i--) {
+      const m = messages[i];
+      if (m.role !== "assistant") continue;
+      const { roadmap } = parseAssistantMessage(m.content);
+      if (roadmap) return roadmap;
+    }
+    return null;
+  }, [messages]);
+
+  function onPrint() {
+    window.print();
+  }
+
   return (
     <div className="space-y-4">
+      {latestRoadmap && (
+        <section
+          data-print="roadmap"
+          className="border border-hairline bg-surface rounded-lg p-5"
+        >
+          <div className="flex items-center justify-between gap-3 mb-3">
+            <div className="flex items-baseline gap-3">
+              <h2 className="m-0 text-[15px] font-semibold tracking-[-0.01em] text-ink">
+                Your career roadmap
+              </h2>
+              <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+                Updated from chat
+              </span>
+            </div>
+            <button
+              onClick={onPrint}
+              data-print-hide="true"
+              className="inline-flex items-center gap-1.5 h-9 px-3.5 bg-bg text-ink font-sans font-medium text-[13px] rounded-lg border border-hairline tracking-[-0.005em] hover:border-accent hover:text-accent"
+            >
+              <span className="font-mono text-[11px]">↓</span> Download as PDF
+            </button>
+          </div>
+          <RoadmapCard roadmap={latestRoadmap} />
+          <p className="mt-4 text-[11px] text-muted-foreground italic">
+            Tip: choose <span className="font-mono">Save as PDF</span> in the print dialog to keep this roadmap.
+          </p>
+        </section>
+      )}
+
       <ChatWindow
         messages={messages}
         loading={loading}
         renderAssistant={(content) => {
-          const { prose, roadmap } = parseAssistantMessage(content);
-          return (
-            <>
-              <span className="whitespace-pre-wrap">{prose}</span>
-              {roadmap && <RoadmapCard roadmap={roadmap} />}
-            </>
-          );
+          const { prose } = parseAssistantMessage(content);
+          return <Markdown text={prose} />;
         }}
       />
 

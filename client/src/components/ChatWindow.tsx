@@ -15,7 +15,7 @@ export function ChatWindow({ messages, loading, renderAssistant }: ChatWindowPro
   }, [messages.length, loading]);
 
   return (
-    <div className="h-[28rem] overflow-y-auto border border-hairline rounded-lg bg-surface p-5 flex flex-col gap-3.5">
+    <div className="min-h-[20rem] max-h-[28rem] overflow-y-auto border border-hairline rounded-lg bg-surface p-5 flex flex-col gap-3.5">
       {messages.length === 0 && (
         <p className="text-sm text-muted-foreground italic">
           Tell me a bit about your background — where you studied, what you've done, where you are now.
