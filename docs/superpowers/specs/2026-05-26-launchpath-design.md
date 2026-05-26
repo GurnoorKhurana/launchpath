@@ -25,7 +25,12 @@ LaunchPath is a career empowerment web app for underrepresented job seekers — 
 - Career switcher
 - Women in tech
 - Generic professional
+
 Or selects "I have my own resume" → paste/drop flow.
+
+**Two entry paths into the Tailor:**
+1. *Has resume* → paste or drop resume text + job posting → Claude runs the full Tailor prompt directly.
+2. *No resume yet, picked a template* → UI shows a short structured form (name, contact, most recent role/education, top 3 skills, optional notable achievements). The form output + the chosen template's framing get sent as `resumeText` to the same `/api/tailor` endpoint, with `templateId` set so Claude follows that template's tone. No separate endpoint, no chat for this path — keeps the flow predictable for demo.
 
 **Cover letter authenticity rule:** Output is labeled "Draft — make it yours." Claude is instructed to insert visible `[your story about X]` and `[your specific reason for this company]` placeholders. UI shows a one-line tip explaining authenticity matters. The product overcomes blank-page paralysis without producing pure-AI slop.
 
