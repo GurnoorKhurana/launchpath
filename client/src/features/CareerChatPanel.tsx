@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { careerChat, type ChatMessage } from "@/lib/api";
 import { ChatWindow } from "@/components/ChatWindow";
+import { parseAssistantMessage } from "@/lib/roadmap";
+import { RoadmapCard } from "@/components/RoadmapCard";
 
 export default function CareerChatPanel() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -44,7 +46,19 @@ export default function CareerChatPanel() {
 
   return (
     <div className="space-y-4">
-      <ChatWindow messages={messages} loading={loading} />
+      <ChatWindow
+        messages={messages}
+        loading={loading}
+        renderAssistant={(content) => {
+          const { prose, roadmap } = parseAssistantMessage(content);
+          return (
+            <>
+              <span className="whitespace-pre-wrap">{prose}</span>
+              {roadmap && <RoadmapCard roadmap={roadmap} />}
+            </>
+          );
+        }}
+      />
 
       <div className="flex gap-2 items-end">
         <textarea
