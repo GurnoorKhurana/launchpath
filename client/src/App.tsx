@@ -1,12 +1,12 @@
 import { useState } from "react";
 import TailorPanel from "@/features/TailorPanel";
-import CareerChatPanel from "@/features/CareerChatPanel";
+import CareerPathForm from "@/features/CareerPathForm";
 
 type Tab = "tailor" | "career";
 
 const tabs: Array<{ id: Tab; label: string; hint: string }> = [
-  { id: "tailor", label: "Resume Tailor", hint: "Match your resume to a job posting" },
-  { id: "career", label: "Career Path", hint: "Explore realistic paths and recertification" },
+  { id: "tailor", label: "Resume Tailor", hint: "Paste a job description or URL — we'll analyze it and tailor your resume" },
+  { id: "career", label: "Career Path", hint: "Answer a few questions to see realistic paths" },
 ];
 
 export default function App() {
@@ -68,7 +68,7 @@ export default function App() {
 
         <div className="mt-9">
           {active === "tailor" && <TailorPanel />}
-          {active === "career" && <CareerChatPanel />}
+          {active === "career" && <CareerPathForm />}
         </div>
 
         <footer className="mt-12 pt-5 border-t border-hairline">
