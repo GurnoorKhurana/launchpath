@@ -5,13 +5,39 @@ export default {
   theme: {
     extend: {
       colors: {
-        border: "hsl(214 32% 91%)",
-        background: "hsl(0 0% 100%)",
-        foreground: "hsl(222 47% 11%)",
-        primary: { DEFAULT: "hsl(222 47% 11%)", foreground: "hsl(210 40% 98%)" },
-        muted: { DEFAULT: "hsl(210 40% 96%)", foreground: "hsl(215 16% 47%)" },
+        // New Modern Geometric tokens (Variant B)
+        bg: "#FAFAFA",
+        surface: "#FFFFFF",
+        ink: "#0A0A0A",
+        body: "#525252",
+        hairline: "#E5E5E5",
+        accent: {
+          DEFAULT: "#4F46E5",
+          soft: "#EEF2FF",
+        },
+
+        // Legacy shadcn-style tokens — kept to avoid breaking existing utilities.
+        border: "#E5E5E5",
+        background: "#FAFAFA",
+        foreground: "#0A0A0A",
+        primary: {
+          DEFAULT: "#4F46E5",
+          foreground: "#FFFFFF",
+        },
+        muted: {
+          DEFAULT: "#F5F5F5",
+          foreground: "#A3A3A3",
+        },
       },
-      borderRadius: { lg: "0.5rem", md: "0.375rem", sm: "0.25rem" },
+      fontFamily: {
+        sans: ["Inter Tight", "ui-sans-serif", "system-ui", "sans-serif"],
+        mono: ["JetBrains Mono", "ui-monospace", "monospace"],
+      },
+      borderRadius: {
+        lg: "8px",
+        md: "6px",
+        sm: "4px",
+      },
     },
   },
   plugins: [],

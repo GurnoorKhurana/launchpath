@@ -60,21 +60,21 @@ export default function CareerChatPanel() {
         }}
       />
 
-      <div className="flex gap-2 items-end">
+      <div className="border border-hairline bg-surface rounded-lg p-3.5 flex gap-3 items-end">
         <textarea
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={onKey}
           placeholder="Type a message..."
           rows={2}
-          className="flex-1 p-3 rounded-md border border-border bg-background text-sm resize-none"
+          className="flex-1 border border-hairline rounded-lg px-3.5 py-3 font-sans text-sm text-ink bg-bg resize-none min-h-[56px] outline-none leading-[1.5] tracking-[-0.003em] placeholder:text-muted-foreground focus:border-accent focus:ring-1 focus:ring-accent"
         />
         <button
           onClick={onSend}
           disabled={loading || input.trim().length === 0}
-          className="px-4 py-2 h-[3.25rem] rounded-md bg-primary text-primary-foreground text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+          className="inline-flex items-center gap-1.5 h-11 px-[18px] bg-accent text-white font-sans font-semibold text-sm rounded-lg tracking-[-0.005em] shadow-[0_1px_0_rgba(10,10,10,0.04),inset_0_-1px_0_rgba(0,0,0,0.08)] disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Send
+          Send <span className="font-mono font-medium">→</span>
         </button>
       </div>
 
@@ -85,7 +85,10 @@ export default function CareerChatPanel() {
       )}
 
       {messages.length > 0 && (
-        <button onClick={reset} className="text-xs text-muted-foreground underline">
+        <button
+          onClick={reset}
+          className="text-xs text-muted-foreground hover:text-body border-b border-dashed border-[#D4D4D4] pb-px"
+        >
           Start over
         </button>
       )}

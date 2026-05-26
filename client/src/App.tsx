@@ -14,37 +14,63 @@ export default function App() {
   const activeMeta = tabs.find((t) => t.id === active)!;
 
   return (
-    <div className="min-h-screen p-6 md:p-10 max-w-6xl mx-auto">
-      <header className="mb-6">
-        <h1 className="text-3xl md:text-4xl font-bold tracking-tight">LaunchPath</h1>
-        <p className="text-muted-foreground mt-1">
-          Career empowerment for newcomers, students, and anyone who has been told to wait their turn.
+    <div className="min-h-screen">
+      <div className="max-w-[1140px] mx-auto px-6 md:px-8 py-10 pb-20">
+        <header className="flex items-center gap-4 pb-6 border-b border-hairline">
+          <div
+            aria-hidden="true"
+            className="w-6 h-6 bg-accent rounded-sm flex-shrink-0 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.04)]"
+          />
+          <div className="flex items-baseline gap-4 flex-1 min-w-0">
+            <h1 className="text-[22px] md:text-[22px] font-bold tracking-[-0.02em] text-ink leading-none">
+              LaunchPath
+            </h1>
+            <p className="text-[13px] text-muted-foreground m-0 truncate">
+              Career empowerment for newcomers, students, and anyone who has been told to wait their turn.
+            </p>
+          </div>
+        </header>
+
+        <nav
+          className="mt-7 flex gap-1 border-b border-hairline relative"
+          role="tablist"
+        >
+          {tabs.map((t) => {
+            const isActive = active === t.id;
+            return (
+              <button
+                key={t.id}
+                role="tab"
+                aria-selected={isActive}
+                onClick={() => setActive(t.id)}
+                className={
+                  "relative px-3.5 pt-2.5 pb-3 text-sm font-medium cursor-pointer bg-transparent border-0 rounded-t-md tracking-[-0.005em] " +
+                  (isActive
+                    ? "text-ink"
+                    : "text-muted-foreground hover:text-body")
+                }
+              >
+                {t.label}
+                {isActive && (
+                  <span
+                    aria-hidden="true"
+                    className="absolute left-2.5 right-2.5 -bottom-px h-0.5 bg-accent rounded-sm"
+                  />
+                )}
+              </button>
+            );
+          })}
+        </nav>
+
+        <p className="mt-3.5 text-[13px] text-muted-foreground tracking-[-0.005em]">
+          {activeMeta.hint}
         </p>
-      </header>
 
-      <nav className="flex gap-2 mb-6 border-b border-border" role="tablist">
-        {tabs.map((t) => (
-          <button
-            key={t.id}
-            role="tab"
-            aria-selected={active === t.id}
-            onClick={() => setActive(t.id)}
-            className={
-              "px-4 py-2 -mb-px border-b-2 text-sm font-medium transition-colors " +
-              (active === t.id
-                ? "border-primary text-primary"
-                : "border-transparent text-muted-foreground hover:text-foreground")
-            }
-          >
-            {t.label}
-          </button>
-        ))}
-      </nav>
-
-      <p className="text-sm text-muted-foreground mb-6">{activeMeta.hint}</p>
-
-      {active === "tailor" && <TailorPanel />}
-      {active === "career" && <CareerChatPanel />}
+        <div className="mt-9">
+          {active === "tailor" && <TailorPanel />}
+          {active === "career" && <CareerChatPanel />}
+        </div>
+      </div>
     </div>
   );
 }

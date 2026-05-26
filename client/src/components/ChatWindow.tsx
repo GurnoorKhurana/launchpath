@@ -15,30 +15,44 @@ export function ChatWindow({ messages, loading, renderAssistant }: ChatWindowPro
   }, [messages.length, loading]);
 
   return (
-    <div className="h-[28rem] overflow-y-auto p-4 rounded-md border border-border bg-background space-y-3">
+    <div className="h-[28rem] overflow-y-auto border border-hairline rounded-lg bg-surface p-5 flex flex-col gap-3.5">
       {messages.length === 0 && (
         <p className="text-sm text-muted-foreground italic">
           Tell me a bit about your background — where you studied, what you've done, where you are now.
         </p>
       )}
-      {messages.map((m, i) => (
-        <div
-          key={i}
-          className={
-            "max-w-[85%] px-4 py-2 rounded-md text-sm " +
-            (m.role === "user"
-              ? "ml-auto bg-primary text-primary-foreground"
-              : "mr-auto bg-muted text-foreground")
-          }
-        >
-          {m.role === "assistant" && renderAssistant
-            ? renderAssistant(m.content, i)
-            : <span className="whitespace-pre-wrap">{m.content}</span>}
-        </div>
-      ))}
+      {messages.map((m, i) => {
+        const isUser = m.role === "user";
+        return (
+          <div
+            key={i}
+            className={
+              "flex max-w-[78%] " +
+              (isUser ? "self-end justify-end" : "self-start")
+            }
+          >
+            <div
+              className={
+                "px-3.5 py-3 text-sm leading-[1.55] tracking-[-0.003em] " +
+                (isUser
+                  ? "bg-accent text-white rounded-[6px_6px_2px_6px]"
+                  : "bg-[#F5F5F5] text-ink rounded-[6px_6px_6px_2px]")
+              }
+            >
+              {m.role === "assistant" && renderAssistant ? (
+                renderAssistant(m.content, i)
+              ) : (
+                <span className="whitespace-pre-wrap">{m.content}</span>
+              )}
+            </div>
+          </div>
+        );
+      })}
       {loading && (
-        <div className="mr-auto max-w-[85%] px-4 py-2 rounded-md text-sm bg-muted text-muted-foreground italic">
-          Thinking...
+        <div className="flex self-start max-w-[78%]">
+          <div className="px-3.5 py-3 text-sm bg-[#F5F5F5] text-muted-foreground italic rounded-[6px_6px_6px_2px]">
+            Thinking...
+          </div>
         </div>
       )}
       <div ref={endRef} />
