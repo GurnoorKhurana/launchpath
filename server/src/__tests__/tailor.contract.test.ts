@@ -45,4 +45,29 @@ describe("POST /api/tailor", () => {
     await request(app).post("/api/tailor").send({ resumeText: "x" }).expect(400);
     await request(app).post("/api/tailor").send({ jobText: "x" }).expect(400);
   });
+
+  it("recovers when Claude wraps JSON in markdown code fences", async () => {
+    const fakeJson = {
+      tailoredBullets: ["A"],
+      matchAnalysis: { strengths: ["B"], gaps: ["C"] },
+      coverLetterDraft: "[your story about why this role]",
+    };
+    const fenced = "```json\n" + JSON.stringify(fakeJson) + "\n```";
+
+    (getAnthropic as any).mockReturnValue({
+      messages: {
+        create: vi.fn().mockResolvedValue({
+          content: [{ type: "text", text: fenced }],
+        }),
+      },
+    });
+
+    const res = await request(app)
+      .post("/api/tailor")
+      .send({ resumeText: "x", jobText: "y" })
+      .expect(200);
+
+    expect(res.body.tailoredBullets).toEqual(["A"]);
+    expect(res.body.coverLetterDraft).toContain("[your story");
+  });
 });
