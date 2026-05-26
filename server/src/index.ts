@@ -2,7 +2,7 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { tailorHandler } from "./routes/tailor.ts";
-import { careerChatHandler } from "./routes/careerChat.ts";
+import { careerPathsHandler } from "./routes/careerPaths.ts";
 
 const app = express();
 const port = Number(process.env.PORT) || 3001;
@@ -16,7 +16,7 @@ app.get("/api/health", (_req, res) => {
 });
 
 app.post("/api/tailor", tailorHandler);
-app.post("/api/career-chat", careerChatHandler);
+app.post("/api/career-paths", careerPathsHandler);
 
 if (process.env.NODE_ENV !== "test") {
   app.listen(port, () => {
