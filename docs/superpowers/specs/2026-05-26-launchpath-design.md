@@ -36,7 +36,9 @@ Or selects "I have my own resume" → paste/drop flow.
 
 **Explicitly cut (parked):** Job fair finder (needs real data sources we don't have), outreach coach, niche-group-specific tips pages. The career path chat covers the newcomer-recertification thread well enough for the demo.
 
-**Audience framing for the pitch:** Lead with the newcomer recertification story. Most emotionally resonant, and the conversational career chat makes it concrete in a way the other features can't.
+**Audience framing for the pitch:** Lead with the newcomer recertification story. Most emotionally resonant, and the conversational career chat makes it concrete in a way the other features can't. Product remains useful for students with no experience and career switchers — copy in the UI speaks to all underrepresented job seekers — but pitch + demo persona are anchored on newcomers.
+
+**Audience decision (2026-05-26 evening, after live v0 verification):** Cousin proposed narrowing audience. Locked on: serve all underrepresented groups, but lead pitch + demo + hero copy with newcomers. Prompts remain inclusive of students/switchers since the broader audience expands real-world utility without diluting the demo story.
 
 ---
 
@@ -114,7 +116,10 @@ launchpath/
 6. Client renders in `OutputCard` with copy-to-clipboard buttons per section.
 
 ### Streaming policy
-Only Career Chat streams (conversational, feels alive). Tailor and Interview Prep are one-shot with a loading spinner — simpler, more reliable for demo.
+Originally: only Career Chat streams. **Revised (Monday evening):** Career Chat ships as one-shot request/response for v1 (simpler, demo-safe). Streaming is a Wednesday polish target if Tue+Wed land on schedule. Tailor and Interview Prep remain one-shot.
+
+### Navigation
+Originally: React Router with `/pages/`. **Revised (Monday evening):** Tab-based navigation inside `App.tsx` — three features, no deep linking, tabs ship in ~10 lines vs. router scaffolding. If Wednesday polish surfaces a need for shareable links to specific features, we can add Router then.
 
 ### Key tech decisions
 - **TypeScript both sides** — catches dumb bugs, judges respect it.
