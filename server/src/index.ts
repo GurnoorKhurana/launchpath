@@ -1,6 +1,7 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
+import { tailorHandler } from "./routes/tailor.ts";
 
 const app = express();
 const port = Number(process.env.PORT) || 3001;
@@ -13,8 +14,12 @@ app.get("/api/health", (_req, res) => {
   res.json({ ok: true, ts: Date.now() });
 });
 
-app.listen(port, () => {
-  console.log(`[launchpath-server] listening on http://localhost:${port}`);
-});
+app.post("/api/tailor", tailorHandler);
+
+if (process.env.NODE_ENV !== "test") {
+  app.listen(port, () => {
+    console.log(`[launchpath-server] listening on http://localhost:${port}`);
+  });
+}
 
 export { app };
