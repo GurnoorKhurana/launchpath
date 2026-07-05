@@ -1,4 +1,5 @@
 import "dotenv/config";
+import path from "node:path";
 import express from "express";
 import cors from "cors";
 import { tailorHandler } from "./routes/tailor.ts";
@@ -19,6 +20,15 @@ app.get("/api/health", (_req, res) => {
 
 app.post("/api/tailor", aiGuard, tailorHandler);
 app.post("/api/career-paths", aiGuard, careerPathsHandler);
+
+// Production: serve the built client from this same server (one host, no CORS).
+// Set CLIENT_DIST=../client/dist (relative to server/) on the deploy host.
+const clientDist = process.env.CLIENT_DIST;
+if (clientDist) {
+  const dist = path.resolve(clientDist);
+  app.use(express.static(dist));
+  app.get(/^\/(?!api\/).*/, (_req, res) => res.sendFile(path.join(dist, "index.html")));
+}
 
 if (process.env.NODE_ENV !== "test") {
   app.listen(port, () => {
