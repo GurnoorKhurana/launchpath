@@ -12,4 +12,5 @@ export function getAnthropic(): Anthropic {
   return client;
 }
 
-export const MODEL_ID = "claude-sonnet-4-6";
+// Overridable so prod can run a cheaper model (e.g. claude-haiku-4-5) within budget.
+export const MODEL_ID = process.env.MODEL_ID || "claude-sonnet-4-6";
