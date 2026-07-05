@@ -1,0 +1,22 @@
+# Render blueprint: one free web service runs the API and serves the built client.
+services:
+  - type: web
+    name: launchpath
+    runtime: node
+    plan: free
+    buildCommand: npm --prefix server install && npm --prefix client install && npm --prefix client run build
+    startCommand: npm --prefix server run start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: CLIENT_DIST
+        value: ../client/dist
+      - key: MODEL_ID
+        value: claude-haiku-4-5
+      - key: DAILY_AI_LIMIT
+        value: "100"
+      - key: IP_HOURLY_LIMIT
+        value: "10"
+      - key: ANTHROPIC_API_KEY
+        sync: false # entered once in the Render dashboard, never in git
